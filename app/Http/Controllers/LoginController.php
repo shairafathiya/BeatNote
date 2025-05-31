@@ -31,7 +31,7 @@ class LoginController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Login successful!',
-                'redirect_url' => '/landing'
+                'redirect_url' => 'home'
             ]);
         }
 
