@@ -8,7 +8,7 @@ use App\Http\Controllers\SongController;
 
 // Root redirect ke register (halaman pertama)
 Route::get('/', function () {
-    return redirect('/register');
+    return redirect('/landing');
 });
 
 // Register routes
@@ -21,11 +21,23 @@ Route::post('/login', [LoginController::class, 'login']);
 
 // Landing page (hanya bisa diakses setelah login)
 Route::get('/landing', function () {
-    return view('landing');
-})->middleware('auth')->name('landing');
+    return view('home');
+})->middleware('auth')->name('home');
 
 // Logout route (opsional)
 Route::post('/logout', function () {
     Auth::logout();
     return redirect('/login');
 })->name('logout');
+
+Route::get('/note', function () {
+    return view('note');
+})->name('note');
+
+Route::get('/music', function () {
+    return view('music');
+})->name('music');
+
+Route::get('/events', function () {
+    return view('events');
+})->name('events');
