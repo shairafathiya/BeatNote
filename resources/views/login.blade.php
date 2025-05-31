@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - BeatsNotes</title>
     @vite('resources/css/app.css')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .bg-custom { background-color: #f5ecda; }
@@ -63,15 +64,36 @@
                 return;
             }
             
-            // Here you would typically send the data to your server
-            console.log('Login attempt:', { email, password });
-            
-            // For demonstration purposes
-            alert('Login form submitted! Check console for details.');
-            
-            // In a real application, you would make an AJAX request here
-            // Example:
             fetch('/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({ email, password })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.success) {
+                    // Gunakan redirect_url dari response
+                    window.location.href = data.redirect_url || '/landing';
+                } else {
+                    alert(data.message || 'Login failed');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+            });
+                    }
+    </script>
+</body>
+</html>
+
+
+
+
+<!-- fetch('/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -81,12 +103,18 @@
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    window.location.href = '/dashboard';
+                    window.location.href = '/landing';
                 } else {
                     alert('Login failed: ' + data.message);
                 }
+
             });
-        }
-    </script>
-</body>
-</html>
+            fetch('/login', {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            },
+            body: JSON.stringify({ email, password })
+            })
+        } -->

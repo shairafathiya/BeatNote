@@ -1,25 +1,31 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SongController;
 
+
+// Root redirect ke register (halaman pertama)
 Route::get('/', function () {
+    return redirect('/register');
+});
+
+// Register routes
+Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+Route::post('/register', [RegisterController::class, 'register']);
+
+// Login routes
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [LoginController::class, 'login']);
+
+// Landing page (hanya bisa diakses setelah login)
+Route::get('/landing', function () {
     return view('landing');
-});
+})->middleware('auth')->name('landing');
 
-Route::get('login',function (){
-    return view('login');
-});
-
-
-Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
-
-Route::resource('songs', SongController::class);
-// Atau jika ingin custom routes:
-Route::get('/music', [SongController::class, 'index'])->name('songs.index');
-Route::post('/music', [SongController::class, 'store'])->name('songs.store');
-Route::get('/music/{song}/edit', [SongController::class, 'edit'])->name('songs.edit');
-Route::put('/music/{song}', [SongController::class, 'update'])->name('songs.update');
-Route::delete('/music/{song}', [SongController::class, 'destroy'])->name('songs.destroy');
+// Logout route (opsional)
+Route::post('/logout', function () {
+    Auth::logout();
+    return redirect('/login');
+})->name('logout');

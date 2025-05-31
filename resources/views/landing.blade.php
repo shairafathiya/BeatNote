@@ -33,7 +33,7 @@
 
             <div class="flex gap-10 mt-16">
                 <div class="bg-[#8a7d6c] p-6 rounded-xl text-white flex flex-col items-center w-40">
-                    <a href="../register" class="hover:underline text-lg font-serif">Register</a>
+                    <a href="/register" class="hover:underline text-lg font-serif">Register</a>
                 </div>
                 <div class="bg-[#b37840] p-6 rounded-xl text-white flex flex-col items-center w-40">
                     <a href="/login" class="hover:underline text-lg font-serif">Login</a>
