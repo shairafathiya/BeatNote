@@ -24,11 +24,6 @@ Route::get('/home', function () {
     return view('home');
 })->middleware('auth')->name('home');
 
-// Logout route (opsional)
-Route::post('/logout', function () {
-    Auth::logout();
-    return redirect('/login');
-})->name('logout');
 
 Route::get('/music', function () {
     return view('music');
@@ -45,6 +40,7 @@ Route::get('/notes', function () {
 
 Route::get('/notes', [NotesController::class, 'index'])->name('notes.index');
 Route::post('/notes', [NotesController::class, 'store'])->name('notes.store');
+Route::delete('/notes/{note}', [NotesController::class, 'destroy'])->name('notes.destroy');
 
 
 
@@ -53,12 +49,10 @@ Route::get('/notes/tag/{tag}', [NotesController::class, 'getByTag'])->name('note
 Route::get('/notes/search', [NotesController::class, 'search'])->name('notes.search');
 
 
-//music
-Route::get('/music', [SongController::class, 'create'])->name('songs.create');
-Route::post('/music', [SongController::class, 'store'])->name('songs.store');
+// Routes untuk Music
+Route::get('/music', [SongController::class, 'index'])->name('songs.index');
+Route::post('/songs', [SongController::class, 'store'])->name('songs.store');
+Route::put('/songs/{song}', [SongController::class, 'update'])->name('songs.update');
+Route::delete('/songs/{song}', [SongController::class, 'destroy'])->name('songs.destroy');
+Route::get('/songs/filter', [SongController::class, 'filter'])->name('songs.filter');
 
-
-//comment
-// Route::get('/notes/{notes}/edit', [NotesController::class, 'edit'])->name('notes.edit');
-// Route::put('/notes/{notes}', [NotesController::class, 'update'])->name('notes.update');
-// Route::delete('/notes/{notes}', [NotesController::class, 'destroy'])->name('notes.destroy');

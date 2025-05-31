@@ -9,26 +9,27 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('songs', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('genre')->nullable();
-            $table->string('status')->nullable();
-            $table->string('audio_path');
-            $table->foreignId('note_id')->nullable()->constrained()->onDelete('set null');
+            $table->string('file_path');
+            $table->string('file_name');
+            $table->enum('genre', ['Pop', 'Rock', 'Jazz', 'Hip-Hop', 'Folk'])->nullable();
+            $table->enum('status', ['Draft', 'Mixing', 'Selesai'])->nullable();
+            $table->unsignedBigInteger('note_id')->nullable();
             $table->timestamps();
+
+            $table->foreign('note_id')->references('id')->on('notes')->onDelete('set null');
         });
     }
 
-
-
-    // /**
-    //  * Reverse the migrations.
-    //  */
-    // public function down(): void
-    // {
-    //     Schema::dropIfExists('songs');
-    // }
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('songs');
+    }
 };

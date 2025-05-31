@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🎶 Notes</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <style>
         body {
             background-color: #faf6ee;
@@ -19,17 +20,21 @@
         <!-- FORM -->
         <div class="bg-white p-6 rounded-xl shadow space-y-4">
             <form id="noteForm" enctype="multipart/form-data">
+                @csrf
                 <input
                     type="text"
                     id="title"
+                    name="title"
                     placeholder="Judul"
                     class="w-full border p-2 rounded"
                     required
                 />
                 <textarea
                     id="content"
+                    name="content"
                     placeholder="Isi catatan"
                     class="w-full border p-2 rounded mt-4"
+                    rows="4"
                     required
                 ></textarea>
                 
@@ -39,29 +44,30 @@
                         class="text-amber-800 hover:underline" 
                         type="file" 
                         id="audio"
+                        name="audio"
                         accept="audio/*"
                     />
                 </div>
                 
                 <div class="flex flex-wrap gap-2 mt-4">
                     <label class="flex items-center space-x-1">
-                        <input type="checkbox" value="lirik" class="tag-checkbox" />
+                        <input type="checkbox" name="tags[]" value="lirik" class="tag-checkbox" />
                         <span class="text-sm capitalize">lirik</span>
                     </label>
                     <label class="flex items-center space-x-1">
-                        <input type="checkbox" value="chord" class="tag-checkbox" />
+                        <input type="checkbox" name="tags[]" value="chord" class="tag-checkbox" />
                         <span class="text-sm capitalize">chord</span>
                     </label>
                     <label class="flex items-center space-x-1">
-                        <input type="checkbox" value="ide" class="tag-checkbox" />
+                        <input type="checkbox" name="tags[]" value="ide" class="tag-checkbox" />
                         <span class="text-sm capitalize">ide</span>
                     </label>
                     <label class="flex items-center space-x-1">
-                        <input type="checkbox" value="draft" class="tag-checkbox" />
+                        <input type="checkbox" name="tags[]" value="draft" class="tag-checkbox" />
                         <span class="text-sm capitalize">draft</span>
                     </label>
                     <label class="flex items-center space-x-1">
-                        <input type="checkbox" value="selesai" class="tag-checkbox" />
+                        <input type="checkbox" name="tags[]" value="selesai" class="tag-checkbox" />
                         <span class="text-sm capitalize">selesai</span>
                     </label>
                 </div>
@@ -87,133 +93,130 @@
 
         <!-- LIST NOTES -->
         <div id="notesList" class="space-y-4">
-            <!-- Notes will be dynamically added here -->
-        </div>
-    </div>
-
-    <script>
-        // Initialize notes array
-        let notes = [];
-        let noteIdCounter = 1;
-
-        // Get DOM elements
-        const noteForm = document.getElementById('noteForm');
-        const titleInput = document.getElementById('title');
-        const contentInput = document.getElementById('content');
-        const audioInput = document.getElementById('audio');
-        const filterInput = document.getElementById('filterInput');
-        const notesList = document.getElementById('notesList');
-        const tagCheckboxes = document.querySelectorAll('.tag-checkbox');
-
-        // Add note function
-        function addNote(event) {
-            event.preventDefault();
-            
-            const title = titleInput.value.trim();
-            const content = contentInput.value.trim();
-            
-            if (!title || !content) {
-                alert('Judul dan isi catatan harus diisi!');
-                return;
-            }
-
-            // Get selected tags
-            const selectedTags = [];
-            tagCheckboxes.forEach(checkbox => {
-                if (checkbox.checked) {
-                    selectedTags.push(checkbox.value);
-                }
-            });
-
-            // Handle audio file
-            let audioURL = null;
-            if (audioInput.files && audioInput.files[0]) {
-                audioURL = URL.createObjectURL(audioInput.files[0]);
-            }
-
-            // Create new note
-            const newNote = {
-                id: noteIdCounter++,
-                title: title,
-                content: content,
-                audio: audioURL,
-                tags: selectedTags
-            };
-
-            // Add to notes array
-            notes.unshift(newNote);
-
-            // Clear form
-            titleInput.value = '';
-            contentInput.value = '';
-            audioInput.value = '';
-            tagCheckboxes.forEach(checkbox => checkbox.checked = false);
-
-            // Render notes
-            renderNotes();
-        }
-
-        // Delete note function
-        function deleteNote(id) {
-            notes = notes.filter(note => note.id !== id);
-            renderNotes();
-        }
-
-        // Filter notes function
-        function filterNotes() {
-            const filterValue = filterInput.value.toLowerCase();
-            const filteredNotes = notes.filter(note => 
-                note.title.toLowerCase().includes(filterValue)
-            );
-            
-            renderNotes(filteredNotes);
-        }
-
-        // Render notes function
-        function renderNotes(notesToRender = notes) {
-            notesList.innerHTML = '';
-            
-            notesToRender.forEach(note => {
-                const noteElement = document.createElement('div');
-                noteElement.className = 'bg-white p-4 rounded shadow flex flex-col gap-2';
-                
-                const tagsHTML = note.tags.map(tag => 
-                    `<span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded">${tag}</span>`
-                ).join('');
-
-                const audioHTML = note.audio ? 
-                    `<audio controls class="w-full">
-                        <source src="${note.audio}" />
-                        Browser kamu tidak mendukung audio
-                    </audio>` : '';
-
-                noteElement.innerHTML = `
+            @forelse($notes as $note)
+                <div class="bg-white p-4 rounded shadow flex flex-col gap-2" data-title="{{ strtolower($note->title) }}">
                     <div class="flex justify-between items-center">
-                        <h2 class="font-bold text-xl">${note.title}</h2>
+                        <h2 class="font-bold text-xl">{{ $note->title }}</h2>
                         <button
-                            onclick="deleteNote(${note.id})"
+                            onclick="deleteNote({{ $note->id }})"
                             class="text-red-500 hover:underline"
                         >
                             Hapus
                         </button>
                     </div>
-                    <p>${note.content}</p>
-                    ${audioHTML}
-                    <div class="flex gap-2 text-sm text-gray-600">
-                        ${tagsHTML}
-                    </div>
-                `;
-                
-                notesList.appendChild(noteElement);
+                    <p>{{ $note->content }}</p>
+                    
+                    @if($note->audio_path)
+                        <audio controls class="w-full">
+                            <source src="{{ asset('storage/' . $note->audio_path) }}" />
+                            Browser kamu tidak mendukung audio
+                        </audio>
+                    @endif
+                    
+                    @if($note->tags)
+                        <div class="flex gap-2 text-sm text-gray-600">
+                            @foreach(json_decode($note->tags) as $tag)
+                                <span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded">{{ $tag }}</span>
+                            @endforeach
+                        </div>
+                    @endif
+                </div>
+            @empty
+                <div class="text-center text-gray-500 py-8">
+                    <p>Belum ada catatan. Tambahkan catatan pertama Anda!</p>
+                </div>
+            @endforelse
+        </div>
+    </div>
+
+    <script>
+        // Set up CSRF token for AJAX requests
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+        // Get DOM elements
+        const noteForm = document.getElementById('noteForm');
+        const filterInput = document.getElementById('filterInput');
+        const notesList = document.getElementById('notesList');
+
+        // Add note function
+        async function addNote(event) {
+            event.preventDefault();
+            
+            const formData = new FormData(noteForm);
+            
+            try {
+                const response = await fetch('{{ route("notes.store") }}', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken,
+                        'Accept': 'application/json',
+                    },
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    // Success - reload page to show new note
+                    window.location.reload();
+                } else {
+                    // Handle validation errors
+                    alert(result.message || 'Terjadi kesalahan saat menyimpan catatan');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Terjadi kesalahan saat menyimpan catatan');
+            }
+        }
+
+        // Delete note function
+        async function deleteNote(id) {
+            if (!confirm('Apakah Anda yakin ingin menghapus catatan ini?')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`{{ url('notes') }}/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken,
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                    }
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    // Success - reload page
+                    window.location.reload();
+                } else {
+                    alert(result.message || 'Terjadi kesalahan saat menghapus catatan');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Terjadi kesalahan saat menghapus catatan');
+            }
+        }
+
+        // Filter notes function (client-side filtering)
+        function filterNotes() {
+            const filterValue = filterInput.value.toLowerCase();
+            const noteElements = notesList.querySelectorAll('[data-title]');
+            
+            noteElements.forEach(noteElement => {
+                const title = noteElement.getAttribute('data-title');
+                if (title.includes(filterValue)) {
+                    noteElement.style.display = 'flex';
+                } else {
+                    noteElement.style.display = 'none';
+                }
             });
         }
 
         // Event listeners
         noteForm.addEventListener('submit', addNote);
         filterInput.addEventListener('input', filterNotes);
-
-        // Initial render
-        renderNotes();
     </script>
 </body>
 </html>
