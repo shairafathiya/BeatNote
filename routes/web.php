@@ -5,6 +5,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SongController;
 use App\Http\Controllers\NotesController;
+use App\Http\Controllers\EventController;
 
 
 Route::get('/', function () {
@@ -56,3 +57,7 @@ Route::put('/songs/{song}', [SongController::class, 'update'])->name('songs.upda
 Route::delete('/songs/{song}', [SongController::class, 'destroy'])->name('songs.destroy');
 Route::get('/songs/filter', [SongController::class, 'filter'])->name('songs.filter');
 
+// Event Routes
+Route::get('/events', [EventController::class, 'index'])->name('events.index');
+Route::post('/events', [EventController::class, 'store'])->name('events.store');
+Route::delete('/events/{event}', [EventController::class, 'destroy'])->name('events.destroy');

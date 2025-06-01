@@ -33,7 +33,7 @@
             <div class="space-x-4">
                 <a href="{{ route('home') }}" class="hover:underline">Home</a>
                 <a href="{{ route('notes.index') }}" class="hover:underline">Notes</a>
-                <a href="{{ route('events') }}" class="hover:underline">Events</a>
+                <a href="/events" class="hover:underline">Events</a>
             </div>
             <div class="text-white">Shaira</div>
         </nav>
@@ -66,7 +66,7 @@
                 
                 <div class="bg-brown-light p-6 rounded-xl text-white flex flex-col items-center w-40">
                     <div class="text-4xl">✴️</div>
-                    <a href="{{ route('events') }}" class="hover:underline text-lg font-serif">Event</a>
+                    <a href="/events" class="hover:underline text-lg font-serif">Event</a>
                 </div>
             </div>
         </div>

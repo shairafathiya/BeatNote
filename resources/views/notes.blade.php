@@ -115,9 +115,22 @@
                     
                     @if($note->tags)
                         <div class="flex gap-2 text-sm text-gray-600">
-                            @foreach(json_decode($note->tags) as $tag)
-                                <span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded">{{ $tag }}</span>
-                            @endforeach
+                            @php
+                                // Safe decode tags - handle both string and array cases
+                                $tags = [];
+                                if (is_string($note->tags)) {
+                                    $decoded = json_decode($note->tags, true);
+                                    $tags = is_array($decoded) ? $decoded : [];
+                                } elseif (is_array($note->tags)) {
+                                    $tags = $note->tags;
+                                }
+                            @endphp
+                            
+                            @if(count($tags) > 0)
+                                @foreach($tags as $tag)
+                                    <span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded">{{ $tag }}</span>
+                                @endforeach
+                            @endif
                         </div>
                     @endif
                 </div>
