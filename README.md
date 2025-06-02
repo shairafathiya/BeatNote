@@ -2,6 +2,7 @@
 Beat Notes adalah aplikasi web berbasis Laravel yang dirancang untuk musisi, pelajar, dan penggemar musik. Aplikasi ini menggabungkan tiga fitur utama: catatan pribadi, pemutar musik, dan manajemen event dalam satu platform terpadu.
 
 📌 Fitur Utama
+
 📝 Catatan Pribadi (Notes)
 
 Tambah, edit, dan hapus catatan.
@@ -77,12 +78,6 @@ Akses di browser: http://127.0.0.1:8000
 
 📸 Tampilan Aplikasi
 Tambahkan screenshot di folder /public/img dan tampilkan seperti ini:
-
-
-👥 Tim Pengembang
-Nur Shadiqah – Fitur Notes, Event, UI Dashboard, Autentikasi
-
-Tasya – Fitur Musik, Seeder Data, Validasi Input, Layout UI
 
 🧪 Status Proyek
 ✅ Dalam tahap akhir pengembangan (v1.0)
