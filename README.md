@@ -1,4 +1,5 @@
 🎵 Beat Notes – Laravel Web App for Music, Notes, and Events
+
 Beat Notes adalah aplikasi web berbasis Laravel yang dirancang untuk musisi, pelajar, dan penggemar musik. Aplikasi ini menggabungkan tiga fitur utama: catatan pribadi, pemutar musik, dan manajemen event dalam satu platform terpadu.
 
 📌 Fitur Utama
