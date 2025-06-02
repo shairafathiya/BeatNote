@@ -5,51 +5,57 @@ Beat Notes adalah aplikasi web berbasis Laravel yang dirancang untuk musisi, pel
 
 📝 Catatan Pribadi (Notes)
 
-Tambah, edit, dan hapus catatan.
+-Tambah, edit, dan hapus catatan.
 
-Pencarian catatan berdasarkan kata kunci.
+-Pencarian catatan berdasarkan kata kunci.
 
 🎶 Musik
 
-Katalog musik berdasarkan genre (R&B, Reggae, Classical, dll).
+-Katalog musik berdasarkan genre (R&B, Reggae, Classical, dll).
 
-Putar musik langsung dari browser.
+-Putar musik langsung dari browser.
 
 📅 Event
 
-Buat dan daftar ke event musik.
+-Buat dan daftar ke event musik.
 
-Lihat detail event dan daftar peserta.
+-Lihat detail event dan daftar peserta.
 
 🔐 Autentikasi
 
 Sistem login dan register dengan proteksi halaman menggunakan middleware.
 
 🧱 Teknologi yang Digunakan
-Laravel 10+ (Backend framework)
 
-Blade (Template engine Laravel)
+-Laravel 10+ (Backend framework)
 
-Bootstrap & Custom CSS (UI Styling)
+-Blade (Template engine Laravel)
 
-MySQL / MariaDB (Database)
+-Bootstrap & Custom CSS (UI Styling)
 
-PHP 8.x
+-MySQL / MariaDB (Database)
 
-Git & GitHub (Version control)
+-PHP 8.x
+
+-TailWind
+
+-Git & GitHub (Version control)
 
 🛠️ Instalasi & Setup
+
 1. Clone Repository
 bash
 Salin
 Edit
 git clone https://github.com/username/beat-notes.git
 cd beat-notes
+
 2. Install Dependency Laravel
 bash
 Salin
 Edit
 composer install
+
 3. Copy .env dan Set Konfigurasi
 bash
 Salin
@@ -63,12 +69,14 @@ Edit
 DB_DATABASE=beat_notes
 DB_USERNAME=root
 DB_PASSWORD=your_mysql_password
+
 4. Generate Key dan Migrate
 bash
 Salin
 Edit
 php artisan key:generate
 php artisan migrate --seed
+
 5. Jalankan Server Lokal
 bash
 Salin
