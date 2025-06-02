@@ -85,8 +85,6 @@ Edit
 php artisan serve
 Akses di browser: http://127.0.0.1:8000
 
-📸 Tampilan Aplikasi
-Tambahkan screenshot di folder /public/img dan tampilkan seperti ini:
 
 🧪 Status Proyek
 ✅ Dalam tahap akhir pengembangan (v1.0)
